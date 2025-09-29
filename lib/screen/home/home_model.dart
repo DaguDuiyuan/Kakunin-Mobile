@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:isar/isar.dart';
+import 'package:hooks_riverpod/legacy.dart';
+import 'package:isar_community/isar.dart';
 import 'package:kakunin/data/models/verification_item.dart';
 
 import 'package:timezone/timezone.dart' as timezone;
@@ -18,7 +19,7 @@ class VerificationItemsNotifier extends StateNotifier<List<ListItemView>> {
   VerificationItemsNotifier(
     this.ref,
   ) : super([]);
-  refresh() {
+  void refresh() {
     state = _isar.verificationItems
         .where()
         .findAllSync()
@@ -28,7 +29,7 @@ class VerificationItemsNotifier extends StateNotifier<List<ListItemView>> {
         .toList();
   }
 
-  insertItem(List<VerificationItem> items) {
+  void insertItem(List<VerificationItem> items) {
     state = [
       ...items.map((item) => ListItemView(
             item: item,

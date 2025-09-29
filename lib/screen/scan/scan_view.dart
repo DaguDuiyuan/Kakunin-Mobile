@@ -75,7 +75,7 @@ class _ScanViewState extends ConsumerState<ScanView> {
                           source: ImageSource.gallery,
                         );
                         if (image != null) {
-                          if (await controller.analyzeImage(image.path)) {
+                          if (await controller.analyzeImage(image.path) != null) {
                             if (!mounted) return;
                           } else {
                             if (!mounted) return;

@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:i18n_extension/i18n_widget.dart';
+import 'package:i18n_extension/i18n_extension.dart';
 import 'package:kakunin/main.dart';
 import 'package:kakunin/utils/i18n.dart';
 import 'package:kakunin/utils/log.dart';
@@ -223,13 +223,6 @@ class _ConfigViewState extends ConsumerState<ConfigView> {
   }
 
   void switchLanguage(WidgetRef ref) {
-    // const locales = [
-    //   Locale('en', "US"),
-    //   Locale('zh', "CN"),
-    //   Locale('zh', "TW"),
-    //   Locale('ja', "JP"),
-    // ];
-    // int val = ref.watch(localeProvider);
     int val = spInstance.getInt("locale") ?? 1;
     showDialog(
       barrierDismissible: false,
@@ -245,16 +238,16 @@ class _ConfigViewState extends ConsumerState<ConfigView> {
                     onPressed: () {
                       int val = spInstance.getInt("locale") ?? 1;
                       I18n.of(context).locale = locales[val];
-                      // ref.read(localeProvider.notifier).state = val;
                       GoRouter.of(context).pop();
                     },
                     child: Text("Cancel".i18n)),
                 TextButton(
                     onPressed: () {
-                      // ref.read(cloudAccountProvider.notifier).checkLogin(CloudAccountType.values[val]);
-                      // accountType.value = val;
-                      spInstance.setInt("locale", val);
-                      GoRouter.of(context).pop();
+                      setState(() {
+                        I18n.of(context).locale = locales[val];
+                        spInstance.setInt("locale", val);
+                        GoRouter.of(context).pop();
+                      });
                     },
                     child: Text("OK".i18n))
               ],
@@ -269,8 +262,6 @@ class _ConfigViewState extends ConsumerState<ConfigView> {
                               onChanged: (value) {
                                 setState(() {
                                   val = value!;
-                                  I18n.of(context).locale = locales[val];
-                                  // ref.read(localeProvider.notifier).state = value;
                                 });
                               },
                             ))

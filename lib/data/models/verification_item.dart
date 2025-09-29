@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 part 'verification_item.g.dart';
 

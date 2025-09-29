@@ -372,17 +372,17 @@ class _BackupViewState extends ConsumerState<BackupView> {
                     //     });
                     //   },
                     // ),
-                    // RadioListTile(
-                    //   value: CloudAccountType.AliYun.index,
-                    //   groupValue: val,
-                    //   title: const Text("AliYun"),
-                    //   onChanged: (value) {
-                    //     return;
-                    //     setState(() {
-                    //       val = value!;
-                    //     });
-                    //   },
-                    // )
+                    RadioListTile(
+                      value: CloudAccountType.BaiduYun.index,
+                      groupValue: val,
+                      title: const Text("BaiduYun"),
+                      onChanged: (value) {
+                        return;
+                        setState(() {
+                          val = value!;
+                        });
+                      },
+                    )
                   ],
                 ),
               ),

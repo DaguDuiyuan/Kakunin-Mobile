@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 // import 'package:go_router_flow/go_router_flow.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:kakunin/data/models/verification_item.dart';
 import 'package:kakunin/screen/home/home_model.dart';
 import 'package:kakunin/utils/i18n.dart';
