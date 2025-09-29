@@ -58,7 +58,7 @@ dependencies:
   url_launcher: ^6.3.2
   protobuf: ^4.2.0
   local_auth: ^2.3.0
-  flutter_exit_app: ^1.1.4
+  # flutter_exit_app: ^1.1.4
   googleapis: ^15.0.0
   google_sign_in: 6.3.0
   extension_google_sign_in_as_googleapis_auth: 2.0.13
