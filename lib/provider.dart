@@ -22,7 +22,7 @@ import 'package:kakunin/utils/parse.dart';
 import 'package:kakunin/utils/snackbar.dart';
 import 'package:webdav_client/webdav_client.dart' as wd;
 
-enum CloudAccountType { Google, WebDav, DropBox, AliYun, BaiduYun }
+enum CloudAccountType { Google, WebDav, DropBox, AliYun }
 
 const String defaultFileName = 'kakunin.otp';
 
@@ -153,10 +153,6 @@ class CloudAccountNotifier extends StateNotifier<CloudAccount> {
           }
           break;
         case CloudAccountType.WebDav:
-          GoRouter.of(NavigationService.navigatorKey.currentContext!)
-              .push("/webdav");
-          break;
-        case CloudAccountType.BaiduYun:
           GoRouter.of(NavigationService.navigatorKey.currentContext!)
               .push("/webdav");
           break;
