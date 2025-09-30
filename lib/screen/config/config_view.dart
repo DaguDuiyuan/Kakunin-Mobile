@@ -28,8 +28,10 @@ class ConfigView extends StatefulHookConsumerWidget {
 
 class _ConfigViewState extends ConsumerState<ConfigView> {
   final LocalAuthentication auth = LocalAuthentication();
-  final titleStyle = const TextStyle(fontSize: 20, fontWeight: FontWeight.normal);
+  final titleStyle =
+      const TextStyle(fontSize: 20, fontWeight: FontWeight.normal);
   final subTitleStyle = const TextStyle(fontSize: 14);
+
   checkAuth() async {
     final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
     return canAuthenticateWithBiometrics || await auth.isDeviceSupported();
@@ -46,7 +48,8 @@ class _ConfigViewState extends ConsumerState<ConfigView> {
     // final monetSupport = ref.watch(monetEnableProvider);
     return Scaffold(
         appBar: AppBar(
-          title: Transform.translate(offset: const Offset(0, -2), child: Text("Settings".i18n)),
+          title: Transform.translate(
+              offset: const Offset(0, -2), child: Text("Settings".i18n)),
           elevation: 4,
         ),
         body: CustomScrollView(
@@ -55,55 +58,70 @@ class _ConfigViewState extends ConsumerState<ConfigView> {
                 delegate: SliverChildListDelegate([
               Container(
                 margin: const EdgeInsets.only(top: 16),
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 child: Text(
                   "Appearance".i18n,
-                  style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
               ),
-              SwitchListTile(
-                contentPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
-                title: Text("Dynamic Color".i18n, style: titleStyle),
-                // onTap: () {
-                //   if (!supportMonet) return;
-                //   ref.read(monetEnableProvider.notifier).state = !monetEnabled;
-                //   spInstance.setBool("dynamicColor", !monetEnabled);
-                // },
-                value: monetEnabled,
-                onChanged: (value) {
-                  if (!supportMonet) return;
-                  ref.read(monetEnableProvider.notifier).state = !monetEnabled;
-                  spInstance.setBool("dynamicColor", !monetEnabled);
-                },
-                subtitle: Text(
-                  "Follow System Desktop for Theme Color".i18n,
-                  style: subTitleStyle,
+              if (supportMonet)
+                SwitchListTile(
+                  contentPadding:
+                      const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                  title: Text("Dynamic Color".i18n, style: titleStyle),
+                  // onTap: () {
+                  //   if (!supportMonet) return;
+                  //   ref.read(monetEnableProvider.notifier).state = !monetEnabled;
+                  //   spInstance.setBool("dynamicColor", !monetEnabled);
+                  // },
+                  value: monetEnabled,
+                  onChanged: (value) {
+                    if (!supportMonet) return;
+                    ref.read(monetEnableProvider.notifier).state =
+                        !monetEnabled;
+                    spInstance.setBool("dynamicColor", !monetEnabled);
+                  },
+                  subtitle: Text(
+                    "Follow System Desktop for Theme Color".i18n,
+                    style: subTitleStyle,
+                  ),
+                  // trailing: Switch(
+                  //   value: monetEnabled,
+                  //   onChanged: (value) {
+                  //     if (!supportMonet) return;
+                  //     ref.read(monetEnableProvider.notifier).state = !monetEnabled;
+                  //     spInstance.setBool("dynamicColor", !monetEnabled);
+                  //   },
+                  //   // onChanged: (value) => setSpBool("dynamicColor", !value, dynamicColor),
+                  // ),
                 ),
-                // trailing: Switch(
-                //   value: monetEnabled,
-                //   onChanged: (value) {
-                //     if (!supportMonet) return;
-                //     ref.read(monetEnableProvider.notifier).state = !monetEnabled;
-                //     spInstance.setBool("dynamicColor", !monetEnabled);
-                //   },
-                //   // onChanged: (value) => setSpBool("dynamicColor", !value, dynamicColor),
-                // ),
-              ),
               monetEnabled
                   ? const SizedBox.shrink()
                   : ListTile(
-                      contentPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                      contentPadding:
+                          const EdgeInsets.only(bottom: 8, left: 16, right: 16),
                       title: Text("Select Color".i18n, style: titleStyle),
                       onTap: () {
-                        final bakColor = ref.read(colorThemeProvider.notifier).state;
-                        final colorSeed = Color(spInstance.getInt("colorSeed") ?? 4294198070);
+                        final bakColor =
+                            ref.read(colorThemeProvider.notifier).state;
+                        final colorSeed =
+                            Color(spInstance.getInt("colorSeed") ?? 4294198070);
                         openMainColorPicker(context, colorSeed, (color) {
-                          ref.read(colorThemeProvider.notifier).state = color! as MaterialColor;
+                          ref.read(colorThemeProvider.notifier).state =
+                              color! as MaterialColor;
                         }, () {
-                          spInstance.setInt("colorSeed", ref.read(colorThemeProvider.notifier).state.value);
+                          spInstance.setInt(
+                              "colorSeed",
+                              ref
+                                  .read(colorThemeProvider.notifier)
+                                  .state
+                                  .value);
                           GoRouter.of(context).pop();
                         }, () {
-                          ref.read(colorThemeProvider.notifier).state = bakColor;
+                          ref.read(colorThemeProvider.notifier).state =
+                              bakColor;
                           GoRouter.of(context).pop();
                         });
                       },
@@ -113,7 +131,8 @@ class _ConfigViewState extends ConsumerState<ConfigView> {
                       ),
                     ),
               ListTile(
-                contentPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                contentPadding:
+                    const EdgeInsets.only(bottom: 8, left: 16, right: 16),
                 title: Text("Switch Language".i18n, style: titleStyle),
                 onTap: () {
                   switchLanguage(ref);
@@ -125,14 +144,17 @@ class _ConfigViewState extends ConsumerState<ConfigView> {
               ),
               Container(
                 margin: const EdgeInsets.only(top: 16),
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 child: Text(
                   "Data".i18n,
-                  style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
               ),
               SwitchListTile(
-                contentPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                contentPadding:
+                    const EdgeInsets.only(bottom: 8, left: 16, right: 16),
                 title: Text("Security Authentication".i18n, style: titleStyle),
                 subtitle: Text(
                   "Perform Security Verification on Startup".i18n,
@@ -141,12 +163,15 @@ class _ConfigViewState extends ConsumerState<ConfigView> {
                 value: needAuth.value,
                 onChanged: (value) async {
                   try {
-                    final bool didAuthenticate = await auth.authenticate(localizedReason: '请验证您的身份信息');
+                    final bool didAuthenticate =
+                        await auth.authenticate(localizedReason: '请验证您的身份信息');
                     if (didAuthenticate) {
                       needAuth.value = !needAuth.value;
                     }
                   } on PlatformException {
-                    showErrorSnackBar("System has not registered any authentication method".i18n);
+                    showErrorSnackBar(
+                        "System has not registered any authentication method"
+                            .i18n);
                   }
                 },
                 // trailing: Switch(
@@ -165,7 +190,8 @@ class _ConfigViewState extends ConsumerState<ConfigView> {
                 // },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                contentPadding:
+                    const EdgeInsets.only(bottom: 8, left: 16, right: 16),
                 title: Text("Backup and Restore".i18n, style: titleStyle),
                 subtitle: Text(
                   "Data Cloud Backup to Reduce Risk of Accidental Loss".i18n,
@@ -177,14 +203,17 @@ class _ConfigViewState extends ConsumerState<ConfigView> {
               ),
               Container(
                 margin: const EdgeInsets.only(top: 16),
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 child: Text(
                   "About".i18n,
-                  style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
               ),
               ListTile(
-                contentPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                contentPadding:
+                    const EdgeInsets.only(bottom: 8, left: 16, right: 16),
                 title: Text("Open Source License".i18n, style: titleStyle),
                 subtitle: Text(
                   "No Them, No Me".i18n,
@@ -195,7 +224,8 @@ class _ConfigViewState extends ConsumerState<ConfigView> {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                contentPadding:
+                    const EdgeInsets.only(bottom: 8, left: 16, right: 16),
                 title: Text("Project Homepage".i18n, style: titleStyle),
                 subtitle: Text(
                   "View Source Code and Buy Me a Coffee".i18n,

@@ -296,7 +296,7 @@ class CloudAccountNotifier extends StateNotifier<CloudAccount> {
     final String text = await Encode.rsa(ref);
     final ints = text.codeUnits;
     File tmpFile = File(
-      name: "kakunin.otp",
+      name: defaultFileName,
       description: "Kakunin 应用备份",
     );
     Media uploadMedia = Media(Stream.value(ints), ints.length);
@@ -318,7 +318,7 @@ class CloudAccountNotifier extends StateNotifier<CloudAccount> {
         state.localDir ?? await FilePicker.platform.getDirectoryPath();
     if (selectedDirectory != null) {
       await SafStream().writeFileBytes(
-          selectedDirectory, "kakunin.otp", 'otp', utf8.encode(text),
+          selectedDirectory, defaultFileName, 'otp', utf8.encode(text),
           overwrite: true);
       showSnackBar("备份成功");
     } else {
@@ -353,8 +353,11 @@ class CloudAccountNotifier extends StateNotifier<CloudAccount> {
   Future<void> restoreWebDav() async {
     try {
       var res = await davClient.read(
-        Uri.encodeComponent(state.davPath! + defaultFileName),
+        state.davPath! + defaultFileName,
       );
+      // var res = await davClient.read(
+      //   Uri.encodeComponent(state.davPath! + defaultFileName),
+      // );
       String str = utf8.decode(res);
       String clearStr = await Encode.decode(str);
       restoreClearString(clearStr);

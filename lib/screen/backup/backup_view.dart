@@ -1,5 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -246,47 +248,48 @@ class _BackupViewState extends ConsumerState<BackupView> {
                         ),
                       ]
                     : [const SizedBox.shrink()],
-                Container(
-                  margin: const EdgeInsets.only(top: 16),
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                  child: Text(
-                    "Local".i18n,
-                    style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                if(Platform.isAndroid)
+                  ...[Container(
+                    margin: const EdgeInsets.only(top: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    child: Text(
+                      "Local".i18n,
+                      style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                    ),
                   ),
-                ),
-                ListTile(
-                  contentPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
-                  title: Text(
-                    "Export Backup".i18n,
-                    style: titleStyle,
-                  ),
-                  subtitle: Text(
-                    cloudAccount.localDir != null
-                        ? "${"Currently backed up in".i18n} ${cloudAccount.localDir}\n${"Long press to switch output directory".i18n}"
-                        : "Backup location not selected yet".i18n,
-                    style: subTitleStyle,
-                  ),
-                  onTap: () async {
-                    ref.read(cloudAccountProvider.notifier).backUpLocal();
-                  },
-                  onLongPress: () {
-                    ref.read(cloudAccountProvider.notifier).resetLocalDir();
-                  },
-                ),
-                ListTile(
-                  contentPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
-                  title: Text(
-                    "Import backup file".i18n,
-                    style: titleStyle,
-                  ),
-                  subtitle: Text(
-                    "Only supports exporting data from the application itself".i18n,
-                    style: subTitleStyle,
-                  ),
-                  onTap: () async {
-                    ref.read(cloudAccountProvider.notifier).restoreLocal();
-                  },
-                ),
+                    ListTile(
+                      contentPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                      title: Text(
+                        "Export Backup".i18n,
+                        style: titleStyle,
+                      ),
+                      subtitle: Text(
+                        cloudAccount.localDir != null
+                            ? "${"Currently backed up in".i18n} ${cloudAccount.localDir}\n${"Long press to switch output directory".i18n}"
+                            : "Backup location not selected yet".i18n,
+                        style: subTitleStyle,
+                      ),
+                      onTap: () async {
+                        ref.read(cloudAccountProvider.notifier).backUpLocal();
+                      },
+                      onLongPress: () {
+                        ref.read(cloudAccountProvider.notifier).resetLocalDir();
+                      },
+                    ),
+                    ListTile(
+                      contentPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
+                      title: Text(
+                        "Import backup file".i18n,
+                        style: titleStyle,
+                      ),
+                      subtitle: Text(
+                        "Only supports exporting data from the application itself".i18n,
+                        style: subTitleStyle,
+                      ),
+                      onTap: () async {
+                        ref.read(cloudAccountProvider.notifier).restoreLocal();
+                      },
+                    ),]
                 // const Divider(
                 //   indent: 16,
                 //   endIndent: 16,
