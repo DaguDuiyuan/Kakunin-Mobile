@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' as io;
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +13,13 @@ import 'package:hooks_riverpod/legacy.dart';
 import 'package:kakunin/main.dart';
 import 'package:kakunin/router.dart';
 import 'package:kakunin/screen/home/home_model.dart';
-import 'package:kakunin/utils/android_file.dart';
 import 'package:kakunin/utils/encode.dart';
 import 'package:kakunin/utils/i18n.dart';
 import 'package:kakunin/utils/log.dart';
 import 'package:kakunin/utils/parse.dart';
 import 'package:kakunin/utils/snackbar.dart';
+import 'package:saf_stream/saf_stream.dart';
+import 'package:saf_util/saf_util.dart';
 import 'package:webdav_client/webdav_client.dart' as wd;
 
 enum CloudAccountType { Google, WebDav, DropBox, AliYun }
@@ -317,11 +317,9 @@ class CloudAccountNotifier extends StateNotifier<CloudAccount> {
     String? selectedDirectory =
         state.localDir ?? await FilePicker.platform.getDirectoryPath();
     if (selectedDirectory != null) {
-      spInstance.setString("localDir", selectedDirectory);
-      state = state.copyWith(localDir: selectedDirectory);
-      io.File file = io.File("$selectedDirectory/kakunin.otp");
-      file.createSync();
-      file.writeAsStringSync(text);
+      await SafStream().writeFileBytes(
+          selectedDirectory, "kakunin.otp", 'otp', utf8.encode(text),
+          overwrite: true);
       showSnackBar("备份成功");
     } else {
       showErrorSnackBar("请先选好备份位置");
@@ -329,10 +327,13 @@ class CloudAccountNotifier extends StateNotifier<CloudAccount> {
   }
 
   Future<void> resetLocalDir() async {
-    // var res = await FilePicker.platform.getDirectoryPath();
-    AndroidInterface aif = AndroidInterface();
-    var res = await aif.selectDirectory();
-    state = state.copyWith(localDir: res);
+    final safUtil = SafUtil();
+    final res = await safUtil.pickDirectory();
+    if (res == null) {
+      showErrorSnackBar("位选择备份位置");
+      return;
+    }
+    state = state.copyWith(localDir: res.uri);
   }
 
   Future<void> restoreGoogle() async {
@@ -364,14 +365,16 @@ class CloudAccountNotifier extends StateNotifier<CloudAccount> {
   }
 
   Future<void> restoreLocal() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-        dialogTitle: "选择您的备份文件",
-        type: FileType.custom,
-        allowedExtensions: ["otp"]);
-    if (result != null) {
-      io.File file = io.File(result.files.single.path!);
-      String clearStr = file.readAsStringSync();
-      restoreClearString(clearStr);
+    String? selectedDirectory =
+        state.localDir ?? await FilePicker.platform.getDirectoryPath();
+    final safUtil = SafUtil();
+    final result = await safUtil.pickFile(
+      initialUri: selectedDirectory,
+    );
+    if (result != null && result.name.endsWith(".otp")) {
+      (await SafStream().readFileStream(result.uri)).listen((v) {
+        restoreClearString(utf8.decode(v));
+      });
     } else {
       // User canceled the picker
       showErrorSnackBar("未选择任何文件");

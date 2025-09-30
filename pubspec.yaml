@@ -66,10 +66,11 @@ dependencies:
   fast_rsa: ^3.8.5
   path_provider: ^2.1.5
   file_picker: ^10.3.3
+  saf_util: ^0.11.0
+  saf_stream: ^0.12.3
   http: ^1.5.0
   html_unescape: ^2.0.0
   webdav_client: ^1.2.2
-  baidupan: ^1.2.2
   i18n_extension: ^15.0.6
   flutter_localizations:
     sdk: flutter
